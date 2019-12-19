@@ -29,7 +29,9 @@ namespace Estorquestrador
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             var conn = Configuration.GetSection("connectionstrings:DevConnectionStr").Value;
+
             
             services.AddSingleton<AppOrm>(_ => new AppOrm( Configuration.GetSection("connectionstrings:DevConnectionStr").Value ) );
             services.AddSingleton<IConfiguration>(Configuration);
@@ -37,7 +39,7 @@ namespace Estorquestrador
 
             services.AddSingleton<FluxoProduto>();
 
-            
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             Provider = services.BuildServiceProvider();
@@ -55,7 +57,17 @@ namespace Estorquestrador
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+/*
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:3000").AllowAnyMethod()
+            );*/
 
+            app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()); 
+            
             app.UseHttpsRedirection();
             app.UseMvc();
         }
