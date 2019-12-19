@@ -81,7 +81,7 @@ namespace Estorquestrador.Fluxos.Produto
         {
             using (var connection  = Service<AppOrm>().Connection() )
             {
-                var update = hard ? 
+                var update = !hard ? 
                 connection
                 .Execute(@"UPDATE Produto 
                                 SET Excluido=1,
