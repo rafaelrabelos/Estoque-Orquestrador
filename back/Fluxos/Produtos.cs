@@ -48,8 +48,9 @@ namespace Estorquestrador.Fluxos.Produto
                 .Execute(@"UPDATE Produto 
                                 SET Nome=@Nome,
                                 Qtd=@Qtd,
+                                Valor=@Valor
                                 Alterado_em=GETDATE()
-                            WHERE id=@id", new{ @id = produto.id, @Nome = produto.Nome, @Qtd = produto.Qtd});
+                            WHERE id=@id", new{ @id = produto.id, @Valor=produto.Valor, @Nome = produto.Nome, @Qtd = produto.Qtd});
 
                 if(update > 0)
                     return this.ObtemPorId<T>(produto.id);
@@ -64,10 +65,10 @@ namespace Estorquestrador.Fluxos.Produto
             {
                 var insert = connection
                 .Query<int>( @"INSERT INTO Produto 
-                            (Nome, Qtd)
+                            (Nome, Qtd, Valor)
                             OUTPUT INSERTED.id
-                            VALUES(@Nome, @Qtd)
-                        ", new{ @Nome = produto.Nome, @Qtd = produto.Qtd }).Single();
+                            VALUES(@Nome, @Qtd, @Valor)
+                        ", new{ @Nome = produto.Nome, @Qtd = produto.Qtd, @Valor=produto.Valor, }).Single();
 
                 if(insert > 0)
                     return this.ObtemPorId<T>(insert);

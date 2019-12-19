@@ -57,10 +57,6 @@ namespace Estorquestrador
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-/*
-            app.UseCors(
-                options => options.WithOrigins("http://localhost:3000").AllowAnyMethod()
-            );*/
 
             app.UseCors(builder => builder
             .AllowAnyOrigin()
