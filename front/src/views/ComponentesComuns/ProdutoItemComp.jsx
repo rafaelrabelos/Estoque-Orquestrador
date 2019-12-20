@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/paper';
 import CollapseItem from 'views/ComponentesComuns/CollapseItem';
 import { ListGroupItem, Badge, Spinner, Button, Col, Input, Row} from "reactstrap";
 import { DeletaProduto, AtualizaProduto } from 'Fluxos/Produto/ProdutoController';
+import { ShakeMe } from 'views/ComponentesComuns/ShakeDiv';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,13 +23,15 @@ class ProdutoItemComp extends React.Component {
             Valor : this.props.valor,
             NomeProduto : this.props.nome,
             QtdProduto : this.props.qtd,
-            ValorProduto : this.props.valor
+            ValorProduto : this.props.valor,
+            CheckNameMsg : ""
         }
     }
 
     toggle = () =>{  this.setState({ CollapseIsOpen : !this.state.CollapseIsOpen } )}
 
-    onChangeInput = (e) => this.setState({  [e.target.name]: e.target.value } ) 
+    onChangeInput = (e) => this.setState({  [e.target.name]: e.target.value })
+    onChangeInputNum= (e) => this.setState({ [e.target.name] : e.target.value === "" ? "0" : e.target.value }) 
     
     editarProduto() {
        
@@ -57,7 +60,16 @@ class ProdutoItemComp extends React.Component {
 
         const {NomeProduto, QtdProduto, ValorProduto} = this.state;
 
-        let result = await AtualizaProduto(this.props.id, NomeProduto, QtdProduto, ValorProduto );
+        if(NomeProduto === "")
+        {
+            this.setState({CheckNameMsg:""}, ()=>this.setState({CheckNameMsg:"Campo deve ser informado"}));
+            return;
+        }
+
+        if(this.state.CheckNameMsg !== "")
+            this.setState({CheckNameMsg:""});
+
+        let result = await AtualizaProduto(this.props.id, NomeProduto, QtdProduto, parseFloat(ValorProduto.toString().replace(",",".")) );
 
         if(result.status &&  result.resposta.length === 1 ){
 
@@ -67,7 +79,7 @@ class ProdutoItemComp extends React.Component {
                 Valor : result.resposta[0].valor,
             })
 
-            toast.success("Produto Deletado Com Sucesso!",
+            toast.success("Produto Atualizado com Sucesso!",
                 {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     onClose: () =>{ this.toggle() }
@@ -91,13 +103,13 @@ class ProdutoItemComp extends React.Component {
                         <Badge color={ this.state.Qtd > 3 ? "success":"warning"} pill><b>Qtd :</b> { this.state.Qtd }</Badge>
                     </div>
                 </div>
-                <Badge color="primary" pill><b>Valor :</b> { this.state.Valor }</Badge>
+                <Badge color="primary" pill><b>Valor :</b> R${ this.state.Valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2}) }</Badge>
                 <div>
                     <div className={`custom-control custom-checkbox custom-checkbox-primary`}>
                         <div className="btn-group-toggle" data-toggle="buttons">
                             <div className="h5 checklist-title mb-0" id={ "ttip" + this.props.ItemKey }>
                                 <h2>
-                                    <Button size="sm" color="primary" onClick={() => this.editarProduto(this.props)}> <i className="text-white mr-2 fa fa-edit" ></i>Editar</Button>
+                                    <Button size="sm" color="primary" onClick={() => this.editarProduto()}> <i className="text-white mr-2 fa fa-edit" ></i>Editar</Button>
                                     <Button size="sm" color="danger" onClick={() => this.excluirProduto()}> <i className="text-white mr-2 fa fa-edit" ></i>Excluir</Button>
                                 </h2>
                             </div>
@@ -118,32 +130,38 @@ class ProdutoItemComp extends React.Component {
                         <Paper>
                             <Row>
                                 <Col xs="6" md="6">
+                                    <ShakeMe bindValueChange={this.state.CheckNameMsg} >
+                                        <Input 
+                                            bsSize="sm"
+                                            type="text"
+                                            required
+                                            id={this.props.id + "_nam"}
+                                            name="NomeProduto"
+                                            placeholder="Nome Produto"
+                                            value={ this.state.NomeProduto }
+                                            onChange={(e) => this.onChangeInput(e) } 
+                                        /><small><font color="red">{this.state.CheckNameMsg}</font></small>
+                                    </ShakeMe>
                                     <Input 
                                         bsSize="sm"
-                                        type="text"
-                                        id={this.props.id + "_nam"}
-                                        name="NomeProduto"
-                                        placeholder="Nome Produto"
-                                        value={ this.state.NomeProduto }
-                                        onChange={(e) => this.onChangeInput(e) } 
-                                    />
-                                    <Input 
-                                        bsSize="sm"
-                                        type="text"
+                                        type='number'
+                                        required
                                         id={this.props.id + "_qtd"}
                                         name={"QtdProduto"}
                                         placeholder="Qtd Produto"
                                         value={ this.state.QtdProduto}
-                                        onChange={(e) => this.onChangeInput(e) } 
+                                        onChange={(e) => this.onChangeInputNum(e) } 
                                     />
                                     <Input 
                                         bsSize="sm"
-                                        type="text"
+                                        type='text'
+                                        required
                                         id={this.props.id + "_val"}
                                         name={"ValorProduto"}
                                         placeholder="Valor Produto"
-                                        value={ this.state.ValorProduto }
-                                        onChange={(e) => this.onChangeInput(e) } 
+                                        value={this.state.ValorProduto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                                        onChange={(e) => this.onChangeInputNum(e) }
+                                        onBlur={ (e)=> this.setState({ValorProduto: parseFloat(e.target.value.replace(",",".")).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2}) }) }
                                     />
                                     </Col>
                                     <Col xs="4" md="4">

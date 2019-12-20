@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Spinner, Button, Card, CardHeader, CardBody, Row, Col, Container, Input} from "reactstrap";
 import { SalvaProduto } from 'Fluxos/Produto/ProdutoController';
+import { ShakeMe } from 'views/ComponentesComuns/ShakeDiv';
 toast.configure({ autoClose: 4000 });
 
 
@@ -19,9 +20,10 @@ class Home extends React.Component {
         ListaProdutosComponente: <Spinner type="grow" />,
         ProdutoContent : <Spinner type="grow" />,
         CollapseIsOpen : false,
-        NomeProduto : this.props.nome,
-        QtdProduto : this.props.qtd,
-        ValorProduto : this.props.valor
+        NomeProduto : "",
+        QtdProduto : 0,
+        ValorProduto : 0,
+        CheckNameMsg : ""
     };
   }
 
@@ -29,7 +31,18 @@ class Home extends React.Component {
 
     const {NomeProduto, QtdProduto, ValorProduto} = this.state;
 
-    let result = await SalvaProduto( NomeProduto, QtdProduto, ValorProduto );
+    if(NomeProduto === "")
+    {
+        this.setState({CheckNameMsg:""}, ()=>this.setState({CheckNameMsg:"Campo deve ser informado"}));
+        return;
+    }
+
+    if(this.state.CheckNameMsg !== "")
+        this.setState({CheckNameMsg:""});
+    
+        
+
+    let result = await SalvaProduto( NomeProduto, QtdProduto, parseFloat(ValorProduto.toString().replace(",",".")) );
 
     if(result.status &&  result.resposta.length === 1 ){
 
@@ -44,7 +57,8 @@ class Home extends React.Component {
     console.log(result)
 }
 
-  onChangeInput = (e) => this.setState({  [e.target.name]: e.target.value } ) 
+  onChangeInput = (e) => this.setState({  [e.target.name]: e.target.value } )
+  onChangeInputNum= (e) => this.setState({ [e.target.name] : e.target.value === "" ? "0" : e.target.value }) 
 
   toggle = () =>{  this.setState({ CollapseIsOpen : !this.state.CollapseIsOpen } )}
 
@@ -103,32 +117,38 @@ class Home extends React.Component {
                                                     <Paper>
                                                         <Row>
                                                             <Col xs="6" md="6">
+                                                                <ShakeMe bindValueChange={this.state.CheckNameMsg} >
+                                                                    <Input 
+                                                                        bsSize="sm"
+                                                                        type="text"
+                                                                        required
+                                                                        id={this.props.id + "_nam"}
+                                                                        name="NomeProduto"
+                                                                        placeholder="Nome Produto"
+                                                                        value={ this.state.NomeProduto }
+                                                                        onChange={(e) => this.onChangeInput(e) } 
+                                                                    /><small><font color="red">{this.state.CheckNameMsg}</font></small>
+                                                                </ShakeMe>
                                                                 <Input 
                                                                     bsSize="sm"
-                                                                    type="text"
-                                                                    id={this.props.id + "_nam"}
-                                                                    name="NomeProduto"
-                                                                    placeholder="Nome Produto"
-                                                                    value={ this.state.NomeProduto }
-                                                                    onChange={(e) => this.onChangeInput(e) } 
-                                                                />
-                                                                <Input 
-                                                                    bsSize="sm"
-                                                                    type="text"
+                                                                    type='number'
+                                                                    required
                                                                     id={this.props.id + "_qtd"}
                                                                     name={"QtdProduto"}
                                                                     placeholder="Qtd Produto"
                                                                     value={ this.state.QtdProduto}
-                                                                    onChange={(e) => this.onChangeInput(e) } 
+                                                                    onChange={(e) => this.onChangeInputNum(e) } 
                                                                 />
                                                                 <Input 
                                                                     bsSize="sm"
-                                                                    type="text"
+                                                                    type='text'
+                                                                    required
                                                                     id={this.props.id + "_val"}
                                                                     name={"ValorProduto"}
                                                                     placeholder="Valor Produto"
-                                                                    value={ this.state.ValorProduto }
-                                                                    onChange={(e) => this.onChangeInput(e) } 
+                                                                    value={ this.state.ValorProduto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2}) }
+                                                                    onChange={(e) => this.onChangeInputNum(e) }
+                                                                    onBlur={ (e)=> this.setState({ValorProduto: parseFloat(e.target.value.replace(",",".")).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2}) }) }
                                                                 />
                                                                 </Col>
                                                                 <Col xs="4" md="4">
