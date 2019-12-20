@@ -2,5 +2,4 @@
 #Ignore thumbnails created by Windows
 Thumbs.db
 #application
-front/
 .vscode/
