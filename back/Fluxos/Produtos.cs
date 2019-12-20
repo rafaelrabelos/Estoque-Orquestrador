@@ -19,7 +19,7 @@ namespace Estorquestrador.Fluxos.Produto
 
             using (var connection  = Service<AppOrm>().Connection() )
             {
-                return connection.Query<T>("SELECT * FROM Produto");
+                return connection.Query<T>("SELECT * FROM Produto ORDER BY Nome ASC");
             }
             
         }
@@ -28,7 +28,7 @@ namespace Estorquestrador.Fluxos.Produto
 
             using (var connection  = Service<AppOrm>().Connection() )
             {
-                return connection.Query<T>("SELECT * FROM Produto WHERE Excluido <> 1");
+                return connection.Query<T>("SELECT * FROM Produto WHERE Excluido <> 1 ORDER BY Nome ASC");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Estorquestrador.Fluxos.Produto
                 .Execute(@"UPDATE Produto 
                                 SET Nome=@Nome,
                                 Qtd=@Qtd,
-                                Valor=@Valor
+                                Valor=@Valor,
                                 Alterado_em=GETDATE()
                             WHERE id=@id", new{ @id = produto.id, @Valor=produto.Valor, @Nome = produto.Nome, @Qtd = produto.Qtd});
 
