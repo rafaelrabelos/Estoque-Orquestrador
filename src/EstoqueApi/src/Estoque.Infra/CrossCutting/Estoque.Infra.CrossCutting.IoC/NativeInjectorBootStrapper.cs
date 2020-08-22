@@ -21,12 +21,15 @@ namespace Estoque.Infra.CrossCutting.IoC
 
             // Connections
             services.AddScoped<IDbConnection>(ctx => DapperConnectionFactory.Connection(configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IRQuery>(ctx => new RebelQueryConnectionFactory(configuration.GetConnectionString("DefaultConnection")));
 
             // Services
             services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IImpostoService, ImpostoService>();
 
             // Infra - Data
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IImpostoRepository, ImpostoRepository>();
 
         }
     }
