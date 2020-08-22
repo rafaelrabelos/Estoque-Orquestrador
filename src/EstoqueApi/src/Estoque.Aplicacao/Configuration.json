@@ -1,5 +1,0 @@
-{
-  "connectionstrings":{
-      "DevConnectionStr": "Server=MP_BRJ9334FYJ\\SQLEXPRESS;Database=Estorquestrador;MultipleActiveResultSets=true;User Id=sa;Password=123adg666"
-  }
-}

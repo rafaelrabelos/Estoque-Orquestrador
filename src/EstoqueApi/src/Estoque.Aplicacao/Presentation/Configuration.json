@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=MP_BRJ9334FYJ\\SQLEXPRESS;Database=Estorquestrador;MultipleActiveResultSets=true;User Id=sa;Password=ppw_root"
+  }
+}
