@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
+using Estoque.Dominio.Entidades;
 
 namespace Estoque.Dominio.Interfaces.Repositorios
 {
-    using Dominio.Entidades;
-
     public interface IProdutoRepository
     {
         public IEnumerable<ProdutoEntity> ObtemTodos();

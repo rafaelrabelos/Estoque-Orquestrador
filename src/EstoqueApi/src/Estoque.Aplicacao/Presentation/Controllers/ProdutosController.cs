@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Estoque.Aplicacao.Services.Interfaces;
+using Estoque.Dominio.Entidades;
 
-namespace Estorquestrador.Controllers
+namespace Estoque.Orquestrador.Controllers
 {
-    using Estoque.Aplicacao.Services.Interfaces;
-    using Estoque.Dominio.Entidades;
-
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]

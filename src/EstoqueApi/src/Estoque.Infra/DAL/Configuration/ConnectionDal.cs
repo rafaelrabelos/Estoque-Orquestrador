@@ -1,5 +1,4 @@
-﻿using System.Data;
-
+﻿
 namespace Estoque.Infra.DAL.Configuration
 {
     public class ConnectionDal

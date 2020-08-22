@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
+using Estoque.Dominio.Entidades;
+using Estoque.Dominio.Interfaces.Repositorios;
 
 namespace Estoque.Aplicacao.Services
 {
-    using Estoque.Dominio.Entidades;
-    using Estoque.Dominio.Interfaces.Repositorios;
     using Interfaces;
-   
-
 
     public class ProdutoService : IProdutoService
     {

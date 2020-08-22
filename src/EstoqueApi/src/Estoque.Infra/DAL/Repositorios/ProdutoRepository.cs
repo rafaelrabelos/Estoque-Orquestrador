@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using Dapper;
+﻿using Dapper;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using Estoque.Dominio.Entidades;
+using Estoque.Dominio.Interfaces.Repositorios;
 
 namespace Estoque.Infra.DAL.Repositorios
 {
-    using Estoque.Dominio.Entidades;
-    using Estoque.Dominio.Interfaces.Repositorios;
-
     public class ProdutoRepository : IProdutoRepository
     {
         private readonly IDbConnection _dapperConnection;

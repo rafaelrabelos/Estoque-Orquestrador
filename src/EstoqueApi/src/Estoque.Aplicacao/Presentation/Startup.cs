@@ -1,5 +1,4 @@
-﻿
-using System.Globalization;
+﻿using System.Globalization;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,10 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.OpenApi.Models;
 
-namespace Estorquestrador
+namespace Estoque.Orquestrador
 {
     using Configuration;
-    using Estoque.Aplicacao.Services.ValueObj;
 
     public class Startup 
     {
