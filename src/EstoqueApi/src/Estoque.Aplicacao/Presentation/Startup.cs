@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.OpenApi.Models;
 
 namespace Estorquestrador
 {
@@ -34,7 +35,23 @@ namespace Estorquestrador
 
             services.AddControllers();
 
-             //Provider = services.BuildServiceProvider();
+            services.AddSwaggerGen(c => {
+
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Orquestrador de Estoque",
+                        Version = "v1",
+                        Description = "API REST, criada com o ASP.NET Core 3.1, para gerenciamento de estoque",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Rafael Rabelo",
+                            Email = "rafael_rabelo@live.com",
+
+                            Url = new System.Uri("https://github.com/rafaelrabelos")
+                        }
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +91,12 @@ namespace Estorquestrador
                 SupportedUICultures = supportedCultures
             });
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Indicadores Econômicos V1");
+            });
+
+        app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
