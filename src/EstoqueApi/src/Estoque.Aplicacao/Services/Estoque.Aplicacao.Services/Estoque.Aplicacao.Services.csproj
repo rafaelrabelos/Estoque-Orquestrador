@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Estoque.Dominio\Estoque.Dominio.csproj" />
-    <ProjectReference Include="..\..\..\Estoque.Infra\DAL\Estoque.Infra.Dal.csproj" />
   </ItemGroup>
 
 </Project>

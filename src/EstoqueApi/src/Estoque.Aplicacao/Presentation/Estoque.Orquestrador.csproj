@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Estoque.Dominio\Estoque.Dominio.csproj" />
     <ProjectReference Include="..\..\Estoque.Infra\CrossCutting\Estoque.Infra.CrossCutting.IoC\Estoque.Infra.CrossCutting.IoC.csproj" />
-    <ProjectReference Include="..\..\Estoque.Infra\DAL\Estoque.Infra.Dal.csproj" />
     <ProjectReference Include="..\Services\Estoque.Aplicacao.Services\Estoque.Aplicacao.Services.csproj" />
   </ItemGroup>
 </Project>
